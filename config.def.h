@@ -24,17 +24,18 @@ static const char *colors[][3]      = {
 static const char *tags[] = { "I", "II", "III", "IV", "V"};
 
 static const Rule rules[] = {
+	//{ "Gimp",    NULL,     NULL,           0,         1,          0,           0,        -1 },
+	//{ "Firefox", NULL,     NULL,           1 << 8,    0,          0,          -1,        -1 },
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
-	//{ "Gimp",    NULL,     NULL,           0,         1,          0,           0,        -1 },
-	//{ "Firefox", NULL,     NULL,           1 << 8,    0,          0,          -1,        -1 },
-	{ "st-256color",      NULL,     NULL,           0,         0,          1,           0,        -1, -1, -1, -1, -1, -1 },
-	{ NULL, "feh",     NULL,           0,         1,          1,           0,        -1, 1280, 720, -1, -1, -1 },
-	{ NULL, "mpv",     NULL,           0,         1,          1,           0,        -1, 1280, 720, -1, -1, -1 },
-	{ NULL,      NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
+	/* class     		instance    title           tags mask  isfloating  isterminal  noswallow  monitor */
+	{ "Alacritty",		  NULL,     NULL,           0,         0,          1,           0,        -1,		680,	 270,	 1200,	 900,	 -1 },
+	{ NULL,			"sxiv",     NULL,           0,         1,          1,           0,        -1, 		1000,	 560,	 -1,	 -1,	 -1 },
+	{ NULL,			 "mpv",     NULL,           0,         1,          1,           0,        -1, 		1000,	 560,	 -1,	 -1,	 -1 },
+	{ NULL,			  NULL,     "fungspad",     0,         1,          1,           0,        -1, 		880,	 420,	 1200,	 900,	 -1 },
+	{ NULL,			  NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, 
 };
 
 /* layout(s) */
@@ -87,14 +88,21 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_normbg, "-nf", col_normfg, "-sb", col_main, "-sf", col_selfg, NULL };
-static const char *termcmd[]  = { "st", NULL };
+static const char *closercmd[] = { "closer", dmenufont, col_normbg, col_normfg, col_main, col_selfg, NULL };
+static const char *termcmd[]  = { "alacritty", NULL};
 static const char *browsercmd[] = { "chromium", NULL };
+static const char *torsettercmd[] = { "torsetter", NULL };
+static const char *spadtermcmd[] = { "spadterm",  NULL };
+static const char *addtospadcmd[] = { "addtospad", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_b,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,             		XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,			XK_g,	   spawn,	   {.v = browsercmd } },
+	{ MODKEY|ShiftMask,		XK_f,	   spawn,	   {.v = torsettercmd } },
+	{ MODKEY,			XK_s,	   spawn,	   {.v = spadtermcmd } },
+	{ MODKEY,			XK_v,	   spawn,	   {.v = addtospadcmd } },
 	{ MODKEY|ShiftMask,             XK_b,      togglebar,      {0} },
 	STACKKEYS(MODKEY,                          focus)
 	STACKKEYS(MODKEY|ShiftMask,                push)
@@ -147,7 +155,7 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
-	{ MODKEY|ShiftMask,             XK_BackSpace, quit,        {0} },
+	{ MODKEY|ShiftMask,             XK_BackSpace, spawn,        {.v = closercmd} },
 };
 
 /* button definitions */
