@@ -32,9 +32,9 @@ static const Rule rules[] = {
 	 */
 	/* class     		instance    title           tags mask  isfloating  isterminal  noswallow  monitor */
 	{ "Alacritty",		  NULL,     NULL,           0,         0,          1,           0,        -1,		680,	 270,	 1200,	 900,	 -1 },
-	{ NULL,			"sxiv",     NULL,           0,         1,          1,           0,        -1, 		1000,	 560,	 -1,	 -1,	 -1 },
+	{ NULL,			"sxiv",     NULL,           0,         1,          1,           0,        -1, 		800,	 460,	 -1,	 -1,	 -1 },
 	{ NULL,			 "mpv",     NULL,           0,         1,          1,           0,        -1, 		1000,	 560,	 -1,	 -1,	 -1 },
-	{ NULL,			  NULL,     "fungspad",     0,         1,          1,           0,        -1, 		880,	 420,	 1200,	 900,	 -1 },
+	{ NULL,			  NULL,     "spud",         0,         1,          1,           0,        -1, 		880,	 420,	 800,	 600,	 -1 },
 	{ NULL,			  NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, 
 };
 
@@ -92,8 +92,10 @@ static const char *closercmd[] = { "closer", dmenufont, col_normbg, col_normfg, 
 static const char *termcmd[]  = { "alacritty", NULL};
 static const char *browsercmd[] = { "chromium", NULL };
 static const char *torsettercmd[] = { "torsetter", NULL };
-static const char *spadtermcmd[] = { "spadterm",  NULL };
+static const char scratchpadname[] = "spud";
+static const char *spadtermcmd[] = { "alacritty", "-t", scratchpadname,  NULL };
 static const char *addtospadcmd[] = { "addtospad", NULL };
+static const char *fzfpasscmd[] = { "fzfpass", "-c", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -101,7 +103,7 @@ static Key keys[] = {
 	{ MODKEY,             		XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,			XK_g,	   spawn,	   {.v = browsercmd } },
 	{ MODKEY|ShiftMask,		XK_f,	   spawn,	   {.v = torsettercmd } },
-	{ MODKEY,			XK_s,	   spawn,	   {.v = spadtermcmd } },
+	//{ MODKEY,			XK_s,	   togglescratch,  {.v = spadtermcmd } },
 	{ MODKEY,			XK_v,	   spawn,	   {.v = addtospadcmd } },
 	{ MODKEY|ShiftMask,             XK_b,      togglebar,      {0} },
 	STACKKEYS(MODKEY,                          focus)
