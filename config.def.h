@@ -3,6 +3,8 @@
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 8;       /* snap pixel */
+static const unsigned int monwidth  = 2560;       /* snap pixel */
+static const unsigned int monheight = 1440;       /* snap pixel */
 static const unsigned int gappih    = 13;       /* horiz inner gap between windows */
 static const unsigned int gappiv    = 13;       /* vert inner gap between windows */
 static const unsigned int gappoh    = 13;       /* horiz outer gap between windows and screen edge */
@@ -24,32 +26,27 @@ typedef struct {
 	const char *name;
 	const void *cmd;
 } Sp;
-const char *spcmd1[] = {"st", "-n", "spterm", "-g", "120x34", NULL };
-const char *spcmd2[] = {"st", "-n", "spfm", "-g", "144x41", "-e", "ranger", NULL };
-const char *spcmd3[] = {"keepassxc", NULL };
-static Sp scratchpads[] = {
-	/* name          cmd  */
-	{"spterm",      spcmd1},
-	{"spranger",    spcmd2},
-	{"keepassxc",   spcmd3},
-};
+
+#define XCENT(a) ((monwidth - (a))/2)
+#define YCENT(b) ((monheight - (b))/2)
 
 /* tagging */
 static const char *tags[] = { "I", "II", "III", "IV", "V"};
 
 static const Rule rules[] = {
 	//{ "Gimp",    NULL,     NULL,           0,         1,          0,           0,        -1 },
-	//{ "Firefox", NULL,     NULL,           1 << 8,    0,          0,          -1,        -1 },
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class     		instance    title           tags mask  isfloating  isterminal  noswallow  monitor */
-	{ "Alacritty",		  NULL,     NULL,           0,         0,          1,           0,        -1,		680,	 270,	 1200,	 900,	 -1 },
-	{ NULL,			"sxiv",     NULL,           0,         1,          1,           0,        -1, 		800,	 460,	 -1,	 -1,	 -1 },
-	{ NULL,			 "mpv",     NULL,           0,         1,          1,           0,        -1, 		1000,	 560,	 -1,	 -1,	 -1 },
-	{ NULL,			  NULL,     "spud",         0,         1,          1,           0,        -1, 		880,	 420,	 800,	 600,	 -1 },
-	{ NULL,			  NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, 
+	/* class				instance		title			tags mask	isfloat isterm  noswall monitor x				y			w			h			bord*/
+	{"Alacritty",			NULL,			NULL,			0,			0,		1,		0,		-1,		-1,				-1,			-1,			-1,			-1},
+	{NULL,					"sxiv",			NULL,			0,			1,		0,		0,		-1,		800,			460,		-1,			-1,			-1},
+	{NULL,					"mpv",			NULL,			0,			1,		0,		0,		-1,		1000,			560,		-1,			-1,			-1},
+	{NULL,					NULL,			"spud",			SPTAG(0),	1,		0,		0,		-1,		XCENT(1000),	YCENT(600),	1000,		600,		-1},
+	{NULL,					NULL,			"spass",		SPTAG(1),	1,		0,		0,		-1,		XCENT(500),		1140,		500,		300,		-1},
+	{NULL,					NULL,			"sperm",		SPTAG(2),	1,		0,		0,		-1,		XCENT(800),		0,			800,		600,		-1},
+	{NULL,					NULL,			"EventTester",	0,			0,		0,		1,		-1,		-1,				-1,			-1,			-1,			-1},
 };
 
 /* layout(s) */
@@ -58,7 +55,7 @@ static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 
-#define FORCE_VSPLIT 1  /* nrowgrid layout: force two clients to always split vertically */
+#define FORCE_VSPLIT 1
 #include "vanitygaps.c"
 
 static const Layout layouts[] = {
@@ -66,17 +63,17 @@ static const Layout layouts[] = {
 	{ "[]=",      tile },    /* first entry is default */
 	{ "[M]",      monocle },
 	{ "[@]",      spiral },
-	//{ "[\\]",     dwindle },
 	{ "H[]",      deck },
+	{ ":::",      gaplessgrid },
+	{ "|M|",      centeredmaster },
+	{ "><>",      NULL },    /* no layout function means floating behavior */
+	//{ "[\\]",     dwindle },
+	//{ ">M>",      centeredfloatingmaster },
 	//{ "TTT",      bstack },
 	//{ "===",      bstackhoriz },
 	//{ "HHH",      grid },
 	//{ "###",      nrowgrid },
 	//{ "---",      horizgrid },
-	{ ":::",      gaplessgrid },
-	{ "|M|",      centeredmaster },
-	//{ ">M>",      centeredfloatingmaster },
-	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ NULL,       NULL },
 };
 
@@ -106,30 +103,76 @@ static const char *closercmd[] = { "closer", dmenufont, col_normbg, col_normfg, 
 static const char *termcmd[]  = { "alacritty", NULL};
 static const char *browsercmd[] = { "chromium", NULL };
 static const char *torsettercmd[] = { "torsetter", NULL };
-static const char scratchpadname[] = "spud";
-static const char *spadtermcmd[] = { "alacritty", "-t", scratchpadname,  NULL };
 static const char *addtospadcmd[] = { "addtospad", NULL };
-static const char *fzfpasscmd[] = { "fzfpass", "-c", NULL };
+static const char *nvimcmd[] = { "alacritty", "--hold", "-e", "nvim", NULL };
+//static const char *spadmcmd[] = { "alacritty", "-o", "window.dimensions.columns=138", "window.dimensions.lines=44", "-t", "spud", "-e", "/bin/zsh", "-c", "nvim ~/files/notes/todo '+vsplit' '+e ~/.cache/scratchpad'", NULL };
+static const char *spadmcmd[] = { "alacritty", "-o", "window.dimensions.columns=138", "window.dimensions.lines=44", "-t", "spud", "-e", "nvim", "+e $HOME/files/notes/todo" , "+vsplit", "+e $HOME/.cache/scratchpad", NULL };
+static const char *spasscmd[] = { "alacritty", "-t", "spass", "-e", "fzfpass", "l", NULL };
+static const char *spermcmd[] = { "alacritty", "-t", "sperm", NULL };
 
+static Sp scratchpads[] = {
+	/* name          cmd  */
+	{"spud",      spadmcmd},
+	{"spass",     spasscmd},
+	{"sperm",     spermcmd}
+};
 
 static Key keys[] = {
-	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_b,      spawn,          {.v = dmenucmd } },
-	{ MODKEY,             		XK_Return, spawn,          {.v = termcmd } },
-	{ MODKEY,			XK_g,	   spawn,	   {.v = browsercmd } },
-	{ MODKEY|ShiftMask,		XK_f,	   spawn,	   {.v = torsettercmd } },
-	//{ MODKEY,			XK_s,	   togglescratch,  {.v = spadtermcmd } },
-	{ MODKEY,			XK_v,	   spawn,	   {.v = addtospadcmd } },
-	{ MODKEY|ShiftMask,             XK_b,      togglebar,      {0} },
+	/* modifier                     key        function			argument */
+	/* program shortcuts */
+	{ MODKEY,             			XK_Return, spawn,			{.v = termcmd } },
+	{ MODKEY,                       XK_b,      spawn,			{.v = dmenucmd } },
+	{ MODKEY,						XK_g,	   spawn,	   		{.v = browsercmd } },
+	{ MODKEY|ShiftMask,				XK_f,	   spawn,			{.v = torsettercmd } },
+	{ MODKEY,						XK_a,	   spawn,			{.v = nvimcmd} },
+	{ MODKEY,						XK_minus,  killclient,		{0} },
+
+	/* scratchpads */
+	{ MODKEY,						XK_s,	   togglescratch,	{.ui = 0 } },
+	{ MODKEY|ShiftMask,				XK_p,	   togglescratch,	{.ui = 1 } },
+	{ MODKEY,						XK_c,	   togglescratch,	{.ui = 2 } },
+	{ MODKEY,						XK_v,	   spawn,			{.v = addtospadcmd } },
+
+	/* stack control */
 	STACKKEYS(MODKEY,                          focus)
 	STACKKEYS(MODKEY|ShiftMask,                push)
-	{ MODKEY|ShiftMask,             XK_i,      incnmaster,     {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_d,      incnmaster,     {.i = -1 } },
-	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
-	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	//{ MODKEY,                    XK_semicolon, zoom,           {0} },
-	{ MODKEY|Mod1Mask,              XK_i,      incrgaps,       {.i = +1 } },
-	{ MODKEY|Mod1Mask|ShiftMask,    XK_i,      incrgaps,       {.i = -1 } },
+
+	/* master control */
+	{ MODKEY|ShiftMask,             XK_i,      incnmaster,		{.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_d,      incnmaster,		{.i = -1 } },
+	{ MODKEY,                       XK_h,      setmfact,		{.f = -0.05} },
+	{ MODKEY,                       XK_l,      setmfact,		{.f = +0.05} },
+
+	/* gaps control */
+	{ MODKEY|Mod1Mask,              XK_i,      incrgaps,		{.i = +1 } },
+	{ MODKEY|Mod1Mask|ShiftMask,    XK_i,      incrgaps,		{.i = -1 } },
+	{ MODKEY|Mod1Mask,              XK_0,      togglegaps,		{0} },
+	{ MODKEY|Mod1Mask|ShiftMask,    XK_0,      defaultgaps,		{0} },
+
+	/* layouts */
+	{ MODKEY,                       XK_t,      setlayout,		{.v = &layouts[0]} }, // tile
+	{ MODKEY,                       XK_y,      setlayout,		{.v = &layouts[1]} }, // monocle
+	{ MODKEY,                       XK_u,      setlayout,		{.v = &layouts[6]} }, // floating
+	{ MODKEY,						XK_i,	   setlayout,		{.v = &layouts[5]} }, // centeredmaster
+	{ MODKEY,						XK_o,	   setlayout,		{.v = &layouts[3]} }, // deck
+	{ MODKEY,						XK_p,	   setlayout,		{.v = &layouts[2]} }, // spiral
+	{ MODKEY,						XK_n, 	   setlayout,		{.v = &layouts[4]} }, // gaplessgrid
+
+	{ MODKEY,            			XK_space,  togglefloating,	{0} },
+
+	{ MODKEY|ShiftMask,             XK_b,      togglebar,		{0} },
+	
+	/* tag control */
+	{ MODKEY,                       XK_Tab,    view,			{0} },
+	{ MODKEY,           			XK_0,      tag,				{.ui = ~0 } },
+	TAGKEYS(                        XK_1,						0)
+	TAGKEYS(                        XK_2,						1)
+	TAGKEYS(                        XK_3,						2)
+	TAGKEYS(                        XK_4,						3)
+	TAGKEYS(                        XK_5,						4)
+
+	{ MODKEY|ShiftMask,             XK_BackSpace, spawn,        {.v = closercmd} },
+
 	//{ MODKEY|Mod1Mask,              XK_i,      incrigaps,      {.i = +1 } },
 	//{ MODKEY|Mod1Mask|ShiftMask,    XK_i,      incrigaps,      {.i = -1 } },
 	//{ MODKEY|Mod1Mask,              XK_o,      incrogaps,      {.i = +1 } },
@@ -142,40 +185,17 @@ static Key keys[] = {
 	//{ MODKEY|Mod1Mask|ShiftMask,    XK_8,      incrohgaps,     {.i = -1 } },
 	//{ MODKEY|Mod1Mask,              XK_9,      incrovgaps,     {.i = +1 } },
 	//{ MODKEY|Mod1Mask|ShiftMask,    XK_9,      incrovgaps,     {.i = -1 } },
-	{ MODKEY|Mod1Mask,              XK_0,      togglegaps,     {0} },
-	{ MODKEY|Mod1Mask|ShiftMask,    XK_0,      defaultgaps,    {0} },
-	{ MODKEY,                       XK_Tab,    view,           {0} },
-	{ MODKEY,             		XK_minus,      killclient,     {0} },
-	/* Layouts */
-	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} }, // tile
-	{ MODKEY,                       XK_u,      setlayout,      {.v = &layouts[1]} }, // monocle
-	{ MODKEY,                       XK_i,      setlayout,      {.v = &layouts[6]} }, // floating
-	{ MODKEY,			XK_o,	   setlayout,	   {.v = &layouts[5]} }, // centeredmaster
-	{ MODKEY,			XK_p,	   setlayout,	   {.v = &layouts[3]} }, // deck
-	{ MODKEY,			XK_n,	   setlayout,	   {.v = &layouts[2]} }, // spiral
-	{ MODKEY,			XK_m, 	   setlayout,	   {.v = &layouts[4]} }, // gaplessgrid
-
-	//{ MODKEY,                       XK_space,  setlayout,      {0} },
-	{ MODKEY,            		XK_space,  togglefloating, {0} },
+	//TAGKEYS(                        XK_6,                      5)
+	//TAGKEYS(                        XK_7,                      6)
+	//TAGKEYS(                        XK_8,                      7)
+	//TAGKEYS(                        XK_9,                      8)
 	//{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-	{ MODKEY,           		XK_0,      tag,            {.ui = ~0 } },
-	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
-	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
-	{ MODKEY,            			XK_y,  	   togglescratch,  {.ui = 0 } },
-	{ MODKEY,            			XK_u,	   togglescratch,  {.ui = 1 } },
-	{ MODKEY,            			XK_x,	   togglescratch,  {.ui = 2 } },
-	TAGKEYS(                        XK_1,                      0)
-	TAGKEYS(                        XK_2,                      1)
-	TAGKEYS(                        XK_3,                      2)
-	TAGKEYS(                        XK_4,                      3)
-	TAGKEYS(                        XK_5,                      4)
-	TAGKEYS(                        XK_6,                      5)
-	TAGKEYS(                        XK_7,                      6)
-	TAGKEYS(                        XK_8,                      7)
-	TAGKEYS(                        XK_9,                      8)
-	{ MODKEY|ShiftMask,             XK_BackSpace, spawn,        {.v = closercmd} },
+	//{ MODKEY,                       XK_space,  setlayout,      {0} },
+	//{ MODKEY,                    XK_semicolon, zoom,           {0} },
+	//{ MODKEY,                       XK_comma,  focusmon,		{.i = -1 } },
+	//{ MODKEY,                       XK_period, focusmon,		{.i = +1 } },
+	//{ MODKEY|ShiftMask,             XK_comma,  tagmon,			{.i = -1 } },
+	//{ MODKEY|ShiftMask,             XK_period, tagmon,			{.i = +1 } },
 };
 
 /* button definitions */
@@ -188,7 +208,7 @@ static Button buttons[] = {
 	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
-	{ ClkClientWin,         MODKEY,         Button1,        resizemouse,    {0} },
+	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
 	{ ClkTagBar,            0,              Button1,        view,           {0} },
 	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
