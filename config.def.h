@@ -97,18 +97,19 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
+#define TERMINAL "alacritty"
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_normbg, "-nf", col_normfg, "-sb", col_main, "-sf", col_selfg, NULL };
-static const char *termcmd[]  = { "alacritty", NULL};
+static const char *termcmd[]  = { TERMINAL, NULL};
 static const char *browsercmd[] = { "chromium", NULL };
 static const char *torsettercmd[] = { "torsetter", NULL };
-static const char *nvimcmd[] = { "alacritty", "-e", "/bin/sh", "-c", "sleep 0.01; nvim", NULL };
+static const char *nvimcmd[] = { TERMINAL, "-e", "/bin/sh", "-c", "sleep 0.01; nvim", NULL };
 
 static const char *closercmd[] = { "closer", dmenufont, col_normbg, col_normfg, col_main, col_selfg, NULL };
 
-static const char *spudmcmd[] = { "alacritty", "-o", "window.dimensions.columns=138", "window.dimensions.lines=44", "-t", "spud", "-e", "nvim", "+e $HOME/files/notes/todo" , "+vsplit", "+e $HOME/.cache/scratchpad", NULL };
-static const char *spasscmd[] = { "alacritty", "-t", "spass", "-e", "fzfpass", "l", NULL };
-static const char *spermcmd[] = { "alacritty", "-t", "sperm", NULL };
+static const char *spudmcmd[] = { TERMINAL, "-o", "window.dimensions.columns=138", "window.dimensions.lines=44", "-t", "spud", "-e", "nvim", "+e $HOME/files/notes/todo" , "+vsplit", "+e $HOME/.cache/scratchpad", NULL };
+static const char *spasscmd[] = { TERMINAL, "-t", "spass", "-e", "fzfpass", "l", NULL };
+static const char *spermcmd[] = { TERMINAL, "-t", "sperm", NULL };
 static const char *addtospadcmd[] = { "addtospad", NULL };
 
 static Sp scratchpads[] = {
