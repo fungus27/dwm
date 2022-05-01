@@ -107,8 +107,8 @@ static const char *nvimcmd[] = { TERMINAL, "-e", "/bin/sh", "-c", "sleep 0.01; n
 
 static const char *closercmd[] = { "closer", dmenufont, col_normbg, col_normfg, col_main, col_selfg, NULL };
 
-static const char *spudcmd[] = { TERMINAL, "-o", "window.dimensions.columns=138", "window.dimensions.lines=44", "-t", "spud", "-e", "nvim", "+e $HOME/files/notes/todo" , "+vsplit", "+e $HOME/.cache/scratchpad", NULL };
-static const char *spasscmd[] = { TERMINAL, "-t", "spass", "-e", "fzfpass", "l", NULL };
+static const char *spudcmd[] = { TERMINAL, "-o", "window.dimensions.columns=138", "window.dimensions.lines=44", "-t", "spud", "-e", "nvim", "+e $HOME/files/notes/todo" , "+vsplit", "+e $HOME/.cache/scratchpad", NULL }; /* works only for alacritty */
+static const char *spasscmd[] = { TERMINAL, "-t", "spass", "-e", "fzfpass", "loop", NULL };
 static const char *spermcmd[] = { TERMINAL, "-t", "sperm", NULL };
 static const char *addtospadcmd[] = { "addtospad", NULL };
 
