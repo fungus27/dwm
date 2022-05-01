@@ -99,16 +99,17 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_normbg, "-nf", col_normfg, "-sb", col_main, "-sf", col_selfg, NULL };
-static const char *closercmd[] = { "closer", dmenufont, col_normbg, col_normfg, col_main, col_selfg, NULL };
 static const char *termcmd[]  = { "alacritty", NULL};
 static const char *browsercmd[] = { "chromium", NULL };
 static const char *torsettercmd[] = { "torsetter", NULL };
-static const char *addtospadcmd[] = { "addtospad", NULL };
-static const char *nvimcmd[] = { "alacritty", "--hold", "-e", "nvim", NULL };
-//static const char *spadmcmd[] = { "alacritty", "-o", "window.dimensions.columns=138", "window.dimensions.lines=44", "-t", "spud", "-e", "/bin/zsh", "-c", "nvim ~/files/notes/todo '+vsplit' '+e ~/.cache/scratchpad'", NULL };
+static const char *nvimcmd[] = { "alacritty", "-e", "/bin/sh", "-c", "sleep 0.01; nvim", NULL };
+
+static const char *closercmd[] = { "closer", dmenufont, col_normbg, col_normfg, col_main, col_selfg, NULL };
+
 static const char *spadmcmd[] = { "alacritty", "-o", "window.dimensions.columns=138", "window.dimensions.lines=44", "-t", "spud", "-e", "nvim", "+e $HOME/files/notes/todo" , "+vsplit", "+e $HOME/.cache/scratchpad", NULL };
 static const char *spasscmd[] = { "alacritty", "-t", "spass", "-e", "fzfpass", "l", NULL };
 static const char *spermcmd[] = { "alacritty", "-t", "sperm", NULL };
+static const char *addtospadcmd[] = { "addtospad", NULL };
 
 static Sp scratchpads[] = {
 	/* name          cmd  */
@@ -121,15 +122,15 @@ static Key keys[] = {
 	/* modifier                     key        function			argument */
 	/* program shortcuts */
 	{ MODKEY,             			XK_Return, spawn,			{.v = termcmd } },
-	{ MODKEY,                       XK_b,      spawn,			{.v = dmenucmd } },
-	{ MODKEY,						XK_g,	   spawn,	   		{.v = browsercmd } },
+	{ MODKEY,                       XK_g,      spawn,			{.v = dmenucmd } },
+	{ MODKEY,						XK_f,	   spawn,	   		{.v = browsercmd } },
 	{ MODKEY|ShiftMask,				XK_f,	   spawn,			{.v = torsettercmd } },
-	{ MODKEY,						XK_a,	   spawn,			{.v = nvimcmd} },
+	{ MODKEY,						XK_d,	   spawn,			{.v = nvimcmd} },
 	{ MODKEY,						XK_minus,  killclient,		{0} },
 
 	/* scratchpads */
-	{ MODKEY,						XK_s,	   togglescratch,	{.ui = 0 } },
-	{ MODKEY|ShiftMask,				XK_p,	   togglescratch,	{.ui = 1 } },
+	{ MODKEY,						XK_z,	   togglescratch,	{.ui = 0 } },
+	{ MODKEY,						XK_x,	   togglescratch,	{.ui = 1 } },
 	{ MODKEY,						XK_c,	   togglescratch,	{.ui = 2 } },
 	{ MODKEY,						XK_v,	   spawn,			{.v = addtospadcmd } },
 
@@ -138,25 +139,25 @@ static Key keys[] = {
 	STACKKEYS(MODKEY|ShiftMask,                push)
 
 	/* master control */
-	{ MODKEY|ShiftMask,             XK_i,      incnmaster,		{.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_d,      incnmaster,		{.i = -1 } },
+	{ MODKEY,     			        XK_m,      incnmaster,		{.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_m,      incnmaster,		{.i = -1 } },
 	{ MODKEY,                       XK_h,      setmfact,		{.f = -0.05} },
 	{ MODKEY,                       XK_l,      setmfact,		{.f = +0.05} },
 
 	/* gaps control */
 	{ MODKEY|Mod1Mask,              XK_i,      incrgaps,		{.i = +1 } },
 	{ MODKEY|Mod1Mask|ShiftMask,    XK_i,      incrgaps,		{.i = -1 } },
-	{ MODKEY|Mod1Mask,              XK_0,      togglegaps,		{0} },
-	{ MODKEY|Mod1Mask|ShiftMask,    XK_0,      defaultgaps,		{0} },
+	{ MODKEY|Mod1Mask,              XK_n,      togglegaps,		{0} },
+	{ MODKEY|Mod1Mask|ShiftMask,    XK_n,      defaultgaps,		{0} },
 
 	/* layouts */
 	{ MODKEY,                       XK_t,      setlayout,		{.v = &layouts[0]} }, // tile
+	{ MODKEY|ShiftMask,				XK_t,	   setlayout,		{.v = &layouts[5]} }, // centeredmaster
 	{ MODKEY,                       XK_y,      setlayout,		{.v = &layouts[1]} }, // monocle
 	{ MODKEY,                       XK_u,      setlayout,		{.v = &layouts[6]} }, // floating
-	{ MODKEY,						XK_i,	   setlayout,		{.v = &layouts[5]} }, // centeredmaster
-	{ MODKEY,						XK_o,	   setlayout,		{.v = &layouts[3]} }, // deck
-	{ MODKEY,						XK_p,	   setlayout,		{.v = &layouts[2]} }, // spiral
-	{ MODKEY,						XK_n, 	   setlayout,		{.v = &layouts[4]} }, // gaplessgrid
+	{ MODKEY,						XK_i,	   setlayout,		{.v = &layouts[3]} }, // deck
+	{ MODKEY,						XK_o,	   setlayout,		{.v = &layouts[2]} }, // spiral
+	{ MODKEY,						XK_p, 	   setlayout,		{.v = &layouts[4]} }, // gaplessgrid
 
 	{ MODKEY,            			XK_space,  togglefloating,	{0} },
 
