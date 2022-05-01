@@ -106,14 +106,14 @@ static const char *nvimcmd[] = { "alacritty", "-e", "/bin/sh", "-c", "sleep 0.01
 
 static const char *closercmd[] = { "closer", dmenufont, col_normbg, col_normfg, col_main, col_selfg, NULL };
 
-static const char *spadmcmd[] = { "alacritty", "-o", "window.dimensions.columns=138", "window.dimensions.lines=44", "-t", "spud", "-e", "nvim", "+e $HOME/files/notes/todo" , "+vsplit", "+e $HOME/.cache/scratchpad", NULL };
+static const char *spudmcmd[] = { "alacritty", "-o", "window.dimensions.columns=138", "window.dimensions.lines=44", "-t", "spud", "-e", "nvim", "+e $HOME/files/notes/todo" , "+vsplit", "+e $HOME/.cache/scratchpad", NULL };
 static const char *spasscmd[] = { "alacritty", "-t", "spass", "-e", "fzfpass", "l", NULL };
 static const char *spermcmd[] = { "alacritty", "-t", "sperm", NULL };
 static const char *addtospadcmd[] = { "addtospad", NULL };
 
 static Sp scratchpads[] = {
     /* name          cmd  */
-    {"spud",      spadmcmd},
+    {"spud",      spudmcmd},
     {"spass",     spasscmd},
     {"sperm",     spermcmd}
 };
