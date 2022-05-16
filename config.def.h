@@ -105,6 +105,7 @@ static const char *browsercmd[] = { "chromium", NULL };
 static const char *torsettercmd[] = { "torsetter", NULL };
 static const char *nvimcmd[] = { TERMINAL, "-e", "/bin/sh", "-c", "sleep 0.05; nvim", NULL };
 static const char *btopcmd[] = { TERMINAL, "-e", "btop", NULL };
+static const char *lfcmd[] = { TERMINAL, "-e", "lf", "~", NULL };
 static const char *closercmd[] = { "closer", dmenufont, col_normbg, col_normfg, col_main, col_selfg, NULL };
 
 static const char *spudcmd[] = { TERMINAL, "-t", "spud", "-e", "/bin/sh", "-c", "sleep 0.05; nvim \"+e $HOME/files/notes/todo\" \"+vsplit\" \"+e $HOME/.cache/scratchpad\"", NULL };
@@ -127,7 +128,8 @@ static Key keys[] = {
     { MODKEY|ShiftMask,             XK_a,      spawn,           {.v = torsettercmd } },
     { MODKEY,                       XK_s,      spawn,           {.v = nvimcmd} },
     { MODKEY,                       XK_d,      spawn,           {.v = dmenucmd } },
-    { MODKEY,                       XK_f,      spawn,           {.v = btopcmd} },
+    { MODKEY,                       XK_f,      spawn,           {.v = lfcmd} },
+    { MODKEY,                       XK_g,      spawn,           {.v = btopcmd} },
     { MODKEY,                       XK_minus,  killclient,      {0} },
 
     /* scratchpads */
