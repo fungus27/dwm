@@ -1,7 +1,6 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 8;       /* snap pixel */
 static const unsigned int monwidth  = 2560;       /* snap pixel */
 static const unsigned int monheight = 1440;       /* snap pixel */
@@ -13,13 +12,13 @@ static       int smartgaps          = 0;        /* 1 means no outer gap when the
 static const int swallowfloating    = 1;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "dylex terminal:size=9"};
-static const char dmenufont[]       = "dylex terminal:size=9";
+
+#include "ui.h"
 #include "theme.h"
 static const char *colors[][3]      = {
     /*               fg         bg         border   */
     [SchemeNorm] = { col_normfg, col_normbg, col_normbord },
-    [SchemeSel]  = { col_selfg, col_main,  col_main  },
+    [SchemeSel]  = { col_selfg, col_selbg,  col_selbord  },
 };
 
 typedef struct {
@@ -98,17 +97,20 @@ static const Layout layouts[] = {
 
 /* commands */
 #define TERMINAL "alacritty"
+#define SCRATCHPAD "$HOME/.cache/scratchpad"
+#define TODO "$HOME/files/notes/todo"
+
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_normbg, "-nf", col_normfg, "-sb", col_main, "-sf", col_selfg, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_normbg, "-nf", col_normfg, "-sb", col_selbg, "-sf", col_selfg, NULL };
 static const char *termcmd[]  = { TERMINAL, NULL};
 static const char *browsercmd[] = { "chromium", NULL };
 static const char *torsettercmd[] = { "torsetter", NULL };
 static const char *nvimcmd[] = { TERMINAL, "-e", "/bin/sh", "-c", "sleep 0.05; nvim", NULL };
 static const char *btopcmd[] = { TERMINAL, "-e", "btop", NULL };
-static const char *lfcmd[] = { TERMINAL, "-e", "lf", "~", NULL };
-static const char *closercmd[] = { "closer", dmenufont, col_normbg, col_normfg, col_main, col_selfg, NULL };
+static const char *lfcmd[] = { TERMINAL, "-e", "/bin/sh", "-c", "sleep 0.05; lf ~", NULL };
+static const char *closercmd[] = { "closer", dmenufont, col_normbg, col_normfg, col_selbg, col_selfg, NULL };
 
-static const char *spudcmd[] = { TERMINAL, "-t", "spud", "-e", "/bin/sh", "-c", "sleep 0.05; nvim \"+e $HOME/files/notes/todo\" \"+vsplit\" \"+e $HOME/.cache/scratchpad\"", NULL };
+static const char *spudcmd[] = { TERMINAL, "-t", "spud", "-e", "/bin/sh", "-c", "sleep 0.05; nvim -n \"+e " TODO "\" \"+vsplit\" \"+e " SCRATCHPAD "\"", NULL };
 static const char *spasscmd[] = { TERMINAL, "-t", "spass", "-e", "fzfpass", "loop", NULL };
 static const char *spermcmd[] = { TERMINAL, "-t", "sperm", NULL };
 static const char *addtospadcmd[] = { "addtospad", NULL };
