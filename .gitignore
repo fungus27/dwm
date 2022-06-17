@@ -1,0 +1,5 @@
+patches/
+config.h
+ui-backup.h
+dwm
+*.o
