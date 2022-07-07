@@ -12,6 +12,7 @@ static       int smartgaps          = 0;        /* 1 means no outer gap when the
 static const int swallowfloating    = 1;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
+static       int enableattachbottom = 0;        /* 1 means attach new clients at the bottom of the stack */
 
 #include "ui.h"
 #include "theme.h"
@@ -87,7 +88,7 @@ static const Layout layouts[] = {
     { MOD, XK_k,     ACTION##stack, {.i = INC(-1) } }, \
     { MOD, XK_semicolon,ACTION##stack, {.i = 0 } }, \
     { MOD, XK_apostrophe, ACTION##stack, {.i = PREVSEL } }, \
-    { MOD, XK_slash,     ACTION##stack, {.i = -1 } },
+    //{ MOD, XK_slash,     ACTION##stack, {.i = -1 } },
     //{ MOD, XK_a,     ACTION##stack, {.i = 1 } }, \
     //{ MOD, XK_z,     ACTION##stack, {.i = 2 } }, \
 
@@ -142,6 +143,7 @@ static Key keys[] = {
     /* stack control */
     STACKKEYS(MODKEY,                          focus)
     STACKKEYS(MODKEY|ShiftMask,                push)
+    { MODKEY,                       XK_slash,  togglebottom,    {0} },
 
     /* master control */
     { MODKEY,                       XK_m,      incnmaster,      {.i = +1 } },
