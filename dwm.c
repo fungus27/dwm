@@ -1203,7 +1203,7 @@ manage(Window w, XWindowAttributes *wa)
 	    attachbottom(c);
     else
         attach(c);
-	attachstack(c);
+    attachstack(c);
 	XChangeProperty(dpy, root, netatom[NetClientList], XA_WINDOW, 32, PropModeAppend,
 		(unsigned char *) &(c->win), 1);
 	XMoveResizeWindow(dpy, c->win, c->x + 2 * sw, c->y, c->w, c->h); /* some windows require this */

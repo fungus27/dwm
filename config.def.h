@@ -46,6 +46,7 @@ static const Rule rules[] = {
     {NULL,                  NULL,           "spud",         SPTAG(0),   1,      0,      0,      -1,     XCENT(1000),    YCENT(600), 1000,       600,        -1},
     {NULL,                  NULL,           "spass",        SPTAG(1),   1,      0,      0,      -1,     XCENT(500),     1140,       500,        300,        -1},
     {NULL,                  NULL,           "sperm",        SPTAG(2),   1,      0,      0,      -1,     XCENT(800),     0,          800,        600,        -1},
+    {NULL,                  NULL,           "dev",          0,          1,      0,      1,      -1,     -1,             -1,         -1,         -1,         -1},
     {NULL,                  NULL,           "EventTester",  0,          0,      0,      1,      -1,     -1,             -1,         -1,         -1,         -1},
 };
 
