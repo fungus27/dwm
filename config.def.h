@@ -104,7 +104,8 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_normbg, "-nf", col_normfg, "-sb", col_selbg, "-sf", col_selfg, NULL };
 static const char *termcmd[]  = { TERMINAL, NULL};
-static const char *browsercmd[] = { "chromium", NULL };
+static const char *browsercmd[] = { "firefox", NULL };
+static const char *torbrowsercmd[] = { "firefox", "-P", "tor", NULL };
 static const char *torsettercmd[] = { "torsetter", NULL };
 static const char *nvimcmd[] = { TERMINAL, "-e", "/bin/sh", "-c", "sleep 0.05; nvim", NULL };
 static const char *btopcmd[] = { TERMINAL, "-e", "btop", NULL };
@@ -128,7 +129,7 @@ static Key keys[] = {
     /* program shortcuts */
     { MODKEY,                       XK_Return, spawn,           {.v = termcmd } },
     { MODKEY,                       XK_a,      spawn,           {.v = browsercmd } },
-    { MODKEY|ShiftMask,             XK_a,      spawn,           {.v = torsettercmd } },
+    { MODKEY|ShiftMask,             XK_a,      spawn,           {.v = torbrowsercmd } },
     { MODKEY,                       XK_s,      spawn,           {.v = nvimcmd} },
     { MODKEY,                       XK_d,      spawn,           {.v = dmenucmd } },
     { MODKEY,                       XK_f,      spawn,           {.v = lfcmd} },
@@ -169,7 +170,9 @@ static Key keys[] = {
 
     { MODKEY,                       XK_space,  togglefloating,  {0} },
 
+    /* options */
     { MODKEY|ShiftMask,             XK_b,      togglebar,       {0} },
+    { MODKEY|Mod1Mask,              XK_a,      spawn,           {.v = torsettercmd } },
     
     /* tag control */
     { MODKEY,                       XK_Tab,    view,            {0} },
