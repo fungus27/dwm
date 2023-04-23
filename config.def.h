@@ -9,7 +9,6 @@ static const unsigned int gappiv    = 13;       /* vert inner gap between window
 static const unsigned int gappoh    = 13;       /* horiz outer gap between windows and screen edge */
 static const unsigned int gappov    = 13;       /* vert outer gap between windows and screen edge */
 static       int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
-static const int swallowfloating    = 1;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static       int enableattachbottom = 0;        /* 1 means attach new clients at the bottom of the stack */
@@ -39,15 +38,15 @@ static const Rule rules[] = {
      *  WM_CLASS(STRING) = instance, class
      *  WM_NAME(STRING) = title
      */
-    /* class                instance        title           tags mask   isfloat isterm  noswall monitor x               y           w           h           bord*/
-    {"Alacritty",           NULL,           NULL,           0,          0,      1,      0,      -1,     -1,             -1,         -1,         -1,         -1},
-    {NULL,                  "sxiv",         NULL,           0,          1,      0,      0,      -1,     800,            460,        -1,         -1,         -1},
-    {NULL,                  "mpv",          NULL,           0,          1,      0,      0,      -1,     1000,           560,        -1,         -1,         -1},
-    {NULL,                  NULL,           "spud",         SPTAG(0),   1,      0,      0,      -1,     XCENT(1000),    YCENT(600), 1000,       600,        -1},
-    {NULL,                  NULL,           "spass",        SPTAG(1),   1,      0,      0,      -1,     XCENT(500),     1140,       500,        300,        -1},
-    {NULL,                  NULL,           "sperm",        SPTAG(2),   1,      0,      0,      -1,     XCENT(800),     0,          800,        600,        -1},
-    {NULL,                  NULL,           "dev",          0,          1,      0,      1,      -1,     -1,             -1,         -1,         -1,         -1},
-    {NULL,                  NULL,           "EventTester",  0,          0,      0,      1,      -1,     -1,             -1,         -1,         -1,         -1},
+    /* class                instance        title           tags mask   isfloat  monitor x               y           w           h           bord*/
+    {"Alacritty",           NULL,           NULL,           0,          0,       -1,     -1,             -1,         -1,         -1,         -1},
+    {NULL,                  "sxiv",         NULL,           0,          1,       -1,     800,            460,        -1,         -1,         -1},
+    {NULL,                  "mpv",          NULL,           0,          1,       -1,     1000,           560,        -1,         -1,         -1},
+    {NULL,                  NULL,           "spud",         SPTAG(0),   1,       -1,     XCENT(1000),    YCENT(600), 1000,       600,        -1},
+    {NULL,                  NULL,           "spass",        SPTAG(1),   1,       -1,     XCENT(500),     1140,       500,        300,        -1},
+    {NULL,                  NULL,           "sperm",        SPTAG(2),   1,       -1,     XCENT(800),     0,          800,        600,        -1},
+    {NULL,                  NULL,           "dev",          0,          1,       -1,     -1,             -1,         -1,         -1,         -1},
+    {NULL,                  NULL,           "EventTester",  0,          0,       -1,     -1,             -1,         -1,         -1,         -1},
 };
 
 /* layout(s) */
