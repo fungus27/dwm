@@ -42,9 +42,9 @@ static const Rule rules[] = {
     {"Alacritty",           NULL,           NULL,           0,          0,       -1,     -1,             -1,         -1,         -1,         -1},
     {NULL,                  "sxiv",         NULL,           0,          1,       -1,     800,            460,        -1,         -1,         -1},
     {NULL,                  "mpv",          NULL,           0,          1,       -1,     1000,           560,        -1,         -1,         -1},
-    {NULL,                  NULL,           "spud",         SPTAG(0),   1,       -1,     XCENT(1000),    YCENT(600), 1000,       600,        -1},
-    {NULL,                  NULL,           "spass",        SPTAG(1),   1,       -1,     XCENT(500),     1140,       500,        300,        -1},
-    {NULL,                  NULL,           "sperm",        SPTAG(2),   1,       -1,     XCENT(800),     0,          800,        600,        -1},
+    {NULL,                  NULL,           "spad",         SPTAG(0),   1,       -1,     XCENT(1000),    YCENT(600), 1000,       600,        -1},
+    {NULL,                  NULL,           "passmenu",        SPTAG(1),   1,       -1,     XCENT(500),     1140,       500,        300,        -1},
+    {NULL,                  NULL,           "qterm",        SPTAG(2),   1,       -1,     XCENT(800),     0,          800,        600,        -1},
     {NULL,                  NULL,           "dev",          0,          1,       -1,     -1,             -1,         -1,         -1,         -1},
     {NULL,                  NULL,           "EventTester",  0,          0,       -1,     -1,             -1,         -1,         -1,         -1},
 };
@@ -111,9 +111,9 @@ static const char *btopcmd[] = { TERMINAL, "-e", "btop", NULL };
 static const char *lfcmd[] = { TERMINAL, "-e", "/bin/sh", "-c", "sleep 0.05; lf ~", NULL };
 static const char *closercmd[] = { "closer", dmenufont, col_normbg, col_normfg, col_selbg, col_selfg, NULL };
 
-static const char *spudcmd[] = { TERMINAL, "-t", "spud", "-e", "/bin/sh", "-c", "sleep 0.05; nvim -n \"+e " TODO "\" \"+vsplit\" \"+e " SCRATCHPAD "\"", NULL };
-static const char *spasscmd[] = { TERMINAL, "-t", "spass", "-e", "fzfpass", "loop", NULL };
-static const char *spermcmd[] = { TERMINAL, "-t", "sperm", NULL };
+static const char *spudcmd[] = { TERMINAL, "-t", "spad", "-e", "/bin/sh", "-c", "sleep 0.05; nvim -n \"+e " TODO "\" \"+vsplit\" \"+e " SCRATCHPAD "\"", NULL };
+static const char *spasscmd[] = { TERMINAL, "-t", "passmenu", "-e", "fzfpass", "loop", NULL };
+static const char *spermcmd[] = { TERMINAL, "-t", "qterm", NULL };
 static const char *addtospadcmd[] = { "addtospad", NULL };
 
 static Sp scratchpads[] = {
